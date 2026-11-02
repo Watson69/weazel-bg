@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<title>Fond vidéo</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+  /* vidéo agrandie de 25 % : le bandeau (titre, logo) que YouTube affiche en haut au début sort du cadre */
+  iframe { position: absolute; top: 50%; left: 50%; width: max(125vw, 222.2vh); height: max(70.3vw, 125vh);
+           transform: translate(-50%, -50%); border: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<script>
+  // Page relais pour l'écran de chargement du serveur : YouTube refuse d'être intégré dans une page FiveM (erreur 153),
+  // cette page sur un vrai domaine https affiche la vidéo en plein cadre, muette et en boucle. Usage : ?v=<identifiant à 11 caractères>
+  (function () {
+    var id = new URLSearchParams(location.search).get('v') || '';
+    if (!/^[\w-]{11}$/.test(id)) return;
+    var frame = document.createElement('iframe');
+    frame.allow = 'autoplay; encrypted-media';
+    frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1&controls=0&loop=1&playlist=' + id +
+      '&modestbranding=1&rel=0&playsinline=1&disablekb=1&iv_load_policy=3';
+    document.body.appendChild(frame);
+  })();
+</script>
+</body>
+</html>
